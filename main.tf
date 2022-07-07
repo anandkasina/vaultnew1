@@ -44,7 +44,7 @@ provider "aws" {
   assume_role {
     duration_seconds = 3600
     session_name = "session-name"
-    role_arn = var.vault_aws_secret_backend_role.name
+    role_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
   }
 }
 resource "aws_s3_bucket" "bucket" {
