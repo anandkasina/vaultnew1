@@ -30,6 +30,8 @@ resource "vault_aws_secret_backend_role" "role" {
 EOT
 }
 
+
+
 # generally, these blocks would be in a different module
 data "vault_aws_access_credentials" "creds" {
   backend = vault_aws_secret_backend.aws.path
@@ -42,7 +44,7 @@ provider "aws" {
   assume_role {
     duration_seconds = 3600
     session_name = "session-name"
-    role_arn = var.aws_deployment_role
+    role_arn = var.vault_aws_secret_backend_role.name
   }
 }
 resource "aws_s3_bucket" "bucket" {
