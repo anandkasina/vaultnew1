@@ -8,12 +8,13 @@ resource "vault_aws_secret_backend" "aws" {
   access_key = "AKIAWCLFHFHVOSEW236W"
   secret_key = "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"
   path = "awsvaulpocnew"
+  region = "ap-south-1"
 }
 
 resource "vault_aws_secret_backend_role" "role" {
   backend = vault_aws_secret_backend.aws.path
   name    = "test2"
-  credential_type = "iam_user"
+  credential_type = "assumed_role"
 
   policy_document = <<EOT
 {
@@ -38,7 +39,7 @@ data "vault_aws_access_credentials" "creds" {
 provider "aws" {
   access_key = data.vault_aws_access_credentials.creds.access_key
   secret_key = data.vault_aws_access_credentials.creds.secret_key
-  region = "ap-south-1"
 }
-
-
+resource "aws_s3_bucket" "bucket" {
+  bucket = "aws-vault"
+  acl    = "public-read"
