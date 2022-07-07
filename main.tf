@@ -39,6 +39,11 @@ data "vault_aws_access_credentials" "creds" {
 provider "aws" {
   access_key = data.vault_aws_access_credentials.creds.access_key
   secret_key = data.vault_aws_access_credentials.creds.secret_key
+  assume_role {
+    duration_seconds = 3600
+    session_name = "session-name"
+    role_arn = var.aws_deployment_role
+  }
 }
 resource "aws_s3_bucket" "bucket" {
   bucket = "aws-vault"
